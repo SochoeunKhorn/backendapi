@@ -30,7 +30,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @Value("${application.upload.client.path}"+"/users/")
+    @Value("${application.upload.server.path}"+"/users/")
     String clientPath;
     @GetMapping()
     public ResponseEntity<?> getUsers(@RequestParam(required = false) String firstname){

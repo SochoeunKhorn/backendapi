@@ -25,7 +25,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
 
-    @Value("${application.upload.client.path}"+"/medias/")
+    @Value("${application.upload.server.path}"+"/medias/")
     String clientPath;
     @Override
     public Media createMedia(Media request) {

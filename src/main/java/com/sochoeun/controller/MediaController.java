@@ -23,7 +23,7 @@ public class MediaController {
     private final MediaService mediaService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.client.path}"+"/medias/")
+    @Value("${application.upload.server.path}"+"/medias/")
     String clientPath;
     @PostMapping
     public ResponseEntity<?> createMedia(@RequestBody Media reques){

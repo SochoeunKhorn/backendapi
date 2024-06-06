@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${application.upload.client.path}"+"/users/")
+    @Value("${application.upload.server.path}"+"/users/")
     String clientPath;
     @Override
     public List<UserResponse> getUsers(String firstname) {

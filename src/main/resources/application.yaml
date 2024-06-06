@@ -30,5 +30,5 @@ application:
     client:
       path: C:\Users\V.I.P/Downloads/uploads/
     server:
-      path: /User/sochoeun/Desktop/Project/uploads/images/
+      path: /home/sochoeun/uploads/
 
