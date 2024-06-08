@@ -11,4 +11,6 @@ public interface ArticleService {
     Article getArticle(Integer articleId);
     Article updateArticle(Integer articleId,ArticleRequest request);
     void deleteArticle(Integer articleId);
+
+    List<Article> getAllByCategoryId(Integer categoryId);
 }

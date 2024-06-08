@@ -11,4 +11,6 @@ public interface ContentService {
     Content getContent(Integer contentId);
     Content updateContent(Integer contentId,ContentRequest request);
     void deleteContent(Integer contentId);
+
+    List<Content> getAllByArticelId(Integer articleId);
 }

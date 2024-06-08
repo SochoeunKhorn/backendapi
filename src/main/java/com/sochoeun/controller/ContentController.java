@@ -56,4 +56,12 @@ public class ContentController {
         baseResponse.success("Content ID: %s deleted".formatted(contentId));
         return ResponseEntity.ok(baseResponse);
     }
+
+    @GetMapping("/article/{articleId}")
+    public ResponseEntity<?> getAllContent(@PathVariable Integer articleId){
+        List<Content> allContent = contentService.getAllByArticelId(articleId);
+        baseResponse = new BaseResponse();
+        baseResponse.success(allContent);
+        return ResponseEntity.ok(baseResponse);
+    }
 }

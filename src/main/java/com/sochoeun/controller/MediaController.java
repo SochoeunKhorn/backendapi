@@ -13,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.sochoeun.constant.constant.PHOTO_MEDIA_DIRECTORY;
 import static org.springframework.util.MimeTypeUtils.*;
 
 @RestController
@@ -23,7 +22,7 @@ public class MediaController {
     private final MediaService mediaService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.server.path}"+"/medias/")
+    @Value("${application.upload.client.path}"+"/medias/")
     String clientPath;
     @PostMapping
     public ResponseEntity<?> createMedia(@RequestBody Media reques){
@@ -50,7 +49,9 @@ public class MediaController {
     }
 
     @PutMapping("/photo")
-    public ResponseEntity<String> uploadMedia(@RequestParam Integer mediaId, @RequestParam MultipartFile file){
+    public ResponseEntity<String> uploadMedia(
+            @RequestParam Integer mediaId,
+            @RequestParam MultipartFile file){
         String profile = mediaService.uploadMedia(mediaId, file);
         return ResponseEntity.ok().body(profile);
     }

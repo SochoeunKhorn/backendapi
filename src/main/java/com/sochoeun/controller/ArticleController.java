@@ -56,4 +56,12 @@ public class ArticleController {
         baseResponse.success("Article ID: %s deleted".formatted(articleId));
         return ResponseEntity.ok(baseResponse);
     }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<?> getAllArticlesByCategoryId(@PathVariable Integer categoryId){
+        List<Article> allArticle = articleService.getAllByCategoryId(categoryId);
+        baseResponse = new BaseResponse();
+        baseResponse.success(allArticle);
+        return ResponseEntity.ok(baseResponse);
+    }
 }

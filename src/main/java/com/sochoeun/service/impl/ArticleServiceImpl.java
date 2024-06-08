@@ -53,4 +53,9 @@ public class ArticleServiceImpl implements ArticleService {
         getArticle(articleId);
         articleRepository.deleteById(articleId);
     }
+
+    @Override
+    public List<Article> getAllByCategoryId(Integer categoryId) {
+        return articleRepository.findAllByCategory_Id(categoryId);
+    }
 }

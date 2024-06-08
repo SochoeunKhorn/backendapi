@@ -68,4 +68,9 @@ public class ContentServiceImpl implements ContentService {
         getContent(contentId);
         contentRepository.deleteById(contentId);
     }
+
+    @Override
+    public List<Content> getAllByArticelId(Integer articleId) {
+        return contentRepository.findAllByArticle_Id(articleId);
+    }
 }
