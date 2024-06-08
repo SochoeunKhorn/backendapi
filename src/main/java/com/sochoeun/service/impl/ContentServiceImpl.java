@@ -71,6 +71,7 @@ public class ContentServiceImpl implements ContentService {
 
     @Override
     public List<Content> getAllByArticelId(Integer articleId) {
+        articleService.getArticle(articleId);
         return contentRepository.findAllByArticle_Id(articleId);
     }
 }

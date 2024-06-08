@@ -66,8 +66,11 @@ public class SlideController {
         return ResponseEntity.ok(baseResponse);
     }
 
+
     @PutMapping(value = "/upload/photo")
-    public ResponseEntity<String> updateUserProfile(@RequestParam Integer slideId, @RequestParam MultipartFile file){
+    public ResponseEntity<String> updateUserProfile(
+            @RequestParam Integer slideId,
+            @RequestParam MultipartFile file){
         String profile = slideService.uploadPhoto(slideId, file);
         return ResponseEntity.ok().body(profile);
     }

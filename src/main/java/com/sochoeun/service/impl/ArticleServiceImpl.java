@@ -56,6 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<Article> getAllByCategoryId(Integer categoryId) {
+        categoryService.getCategory(categoryId);
         return articleRepository.findAllByCategory_Id(categoryId);
     }
 }
