@@ -26,7 +26,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class SlideServiceImpl implements SlideService {
     private final SlideRepository slideRepository;
 
-    @Value("${application.upload.client.path}"+"/slides/")
+    @Value("${application.upload.server.path}"+"/slides/")
     String clientPath;
     // CRUD
     @Override

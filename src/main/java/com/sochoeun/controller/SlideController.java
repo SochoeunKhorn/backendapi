@@ -23,7 +23,7 @@ public class SlideController {
     private final SlideService slideService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.client.path}"+"/slides/")
+    @Value("${application.upload.server.path}"+"/slides/")
     String clientPath;
 
     @PostMapping
