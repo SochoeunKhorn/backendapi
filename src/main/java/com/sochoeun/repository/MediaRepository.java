@@ -12,4 +12,7 @@ public interface MediaRepository extends JpaRepository<Media,Integer> {
     List<Media> findAllByMediaTypeContainingIgnoreCase(String type);
     // findAllByContentId
     List<Media> findAllByContentId(Integer contentId);
+
+    // findAllByContentIdAndContentType
+    List<Media> findAllByContentIdAndMediaTypeContainingIgnoreCase(Integer contentId, String mediaType);
 }

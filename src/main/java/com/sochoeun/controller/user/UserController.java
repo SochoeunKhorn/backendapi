@@ -1,17 +1,10 @@
 package com.sochoeun.controller.user;
 
-import com.sochoeun.constant.constant;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.request.UserRequest;
 import com.sochoeun.model.response.UserResponse;
 import com.sochoeun.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperties;
-import jakarta.servlet.annotation.MultipartConfig;
-import jakarta.websocket.server.PathParam;
-import jdk.jfr.ContentType;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -60,13 +53,15 @@ public class UserController {
 
 
 
-    @PutMapping(value = "/update/profile")
-    public ResponseEntity<String> updateUserProfile(@RequestParam Integer userId,
-                                                    @RequestParam MultipartFile file){
+    @PutMapping(value = "/update/profile",consumes = "multipart/form-data")
+    public ResponseEntity<String> updateUserProfile(
+            @RequestParam Integer userId,
+            @RequestParam MultipartFile file){
         String profile = userService.uploadProfile(userId, file);
         return ResponseEntity.ok().body(profile);
     }
 
+    @Hidden
     @GetMapping(path = "/profile/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
         return Files.readAllBytes(Paths.get(clientPath + filename));

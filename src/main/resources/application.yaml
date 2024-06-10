@@ -1,8 +1,9 @@
 spring:
   datasource:
     url: jdbc:postgresql://194.233.87.193:5432/postgres
+    #url: jdbc:postgresql://localhost:5432/db-development
     username: postgres
-    password: 123
+    password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -31,4 +32,11 @@ application:
       path: C:\Users\V.I.P/Downloads/uploads/
     server:
       path: /home/sochoeun/uploads/
+
+# openapi 3
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 

@@ -3,6 +3,7 @@ package com.sochoeun.controller;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Slide;
 import com.sochoeun.service.SlideService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -67,7 +68,7 @@ public class SlideController {
     }
 
 
-    @PutMapping(value = "/upload/photo")
+    @PutMapping(value = "/upload/photo",consumes = {"multipart/form-data"})
     public ResponseEntity<String> updateUserProfile(
             @RequestParam Integer slideId,
             @RequestParam MultipartFile file){
@@ -75,6 +76,7 @@ public class SlideController {
         return ResponseEntity.ok().body(profile);
     }
 
+    @Hidden
     @GetMapping(path = "/photo/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
         return Files.readAllBytes(Paths.get(clientPath + filename));

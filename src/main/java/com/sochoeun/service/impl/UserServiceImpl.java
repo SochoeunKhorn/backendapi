@@ -58,6 +58,11 @@ public class UserServiceImpl implements UserService {
             } else {
                 status = "DISABLE";
             }
+            List<String> strRole = new ArrayList<>();
+            List<Role> roles = user.getRoles();
+            roles.forEach(role -> {
+                strRole.add(role.getName());
+            });
             UserResponse response =UserResponse.builder()
                     .id(user.getId())
                     .firstname(user.getFirstname())
@@ -65,6 +70,7 @@ public class UserServiceImpl implements UserService {
                     .email(user.getEmail())
                     .profile(user.getProfile())
                     .status(status)
+                    .roles(strRole)
                     .build();
             userResponses.add(response);
         });
