@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -24,8 +25,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
 
-    @Value("${application.upload.server.path}"+"/medias/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/media/")
+    String serverPath;
     @Override
     public Media createMedia(Media request) {
         return mediaRepository.save(request);
@@ -64,9 +65,9 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public String uploadMedia(Integer mediaId, MultipartFile file) {
+        String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
+        String mediaUrl = photoFunction.apply(photoName,file);
         Media media = getMedia(mediaId);
-        String mediaName = media.getName().toLowerCase();
-        String mediaUrl = photoFunction.apply(mediaName,file);
         media.setMediaUrl(mediaUrl);
         mediaRepository.save(media);
         return mediaUrl;
@@ -80,7 +81,7 @@ public class MediaServiceImpl implements MediaService {
 
     private final BiFunction<String,MultipartFile,String> photoFunction = (id, image) ->{
         try{
-            Path fileStorageLocation = Paths.get(clientPath).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
             if (!Files.exists(fileStorageLocation)){
                 Files.createDirectories(fileStorageLocation);
             }
@@ -92,7 +93,7 @@ public class MediaServiceImpl implements MediaService {
 
             return ServletUriComponentsBuilder
                     .fromCurrentContextPath() // localhost:8080
-                    .path("/api/medias/photo/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
+                    .path("/api/medias/image/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
         }catch (Exception e){
             throw new RuntimeException("Unable to save image");
         }

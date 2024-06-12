@@ -28,8 +28,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
-    @Value("${application.upload.server.path}"+"/teams/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/team/")
+    String serverPath;
     @Override
     public Team createTeam(Team request) {
         return teamRepository.save(request);
@@ -78,7 +78,7 @@ public class TeamServiceImpl implements TeamService {
 
     private final BiFunction<String,MultipartFile,String> photoFunction = (id, image) ->{
         try{
-            Path fileStorageLocation = Paths.get(clientPath).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
             if (!Files.exists(fileStorageLocation)){
                 Files.createDirectories(fileStorageLocation);
             }
@@ -90,7 +90,7 @@ public class TeamServiceImpl implements TeamService {
 
             return ServletUriComponentsBuilder
                     .fromCurrentContextPath() // localhost:8080
-                    .path("/api/teams/profile/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
+                    .path("/api/teams/image/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
         }catch (Exception e){
             throw new RuntimeException("Unable to save image");
         }

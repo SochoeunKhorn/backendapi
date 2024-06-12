@@ -28,8 +28,6 @@ application:
       refresh-token:
         expiration: 604800000 # 7 days
   upload:
-    client:
-      path: C:\Users\V.I.P/Downloads/uploads/
     server:
       path: /home/sochoeun/uploads/
 

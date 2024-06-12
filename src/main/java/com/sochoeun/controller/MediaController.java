@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.util.MimeTypeUtils.*;
@@ -26,8 +25,8 @@ public class MediaController {
     private final ContentService contentService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.server.path}"+"/medias/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/media/")
+    String serverPath;
     @PostMapping
     public ResponseEntity<?> createMedia(@RequestBody Media request){
         contentService.getContent(request.getContentId());
@@ -58,7 +57,7 @@ public class MediaController {
             @RequestParam(required = false) Integer contentId,
             @RequestParam(required = false) String mediaType
             ){
-        List<Media> getAll = new ArrayList<>();
+        List<Media> getAll ;
         if (contentId == null){
             if (mediaType!= null){
                 getAll = mediaService.getAllByMediaType(mediaType);
@@ -77,18 +76,17 @@ public class MediaController {
         return ResponseEntity.ok(baseResponse);
     }
 
-    @PutMapping(value = "/upload/photo",consumes = "multipart/form-data")
+    @PutMapping(value = "/upload/image",consumes = "multipart/form-data")
     public ResponseEntity<String> uploadMedia(
             @RequestParam Integer mediaId,
             @RequestParam MultipartFile file){
         String profile = mediaService.uploadMedia(mediaId, file);
-        return ResponseEntity.ok().body(profile);
+        return ResponseEntity.ok(profile);
     }
 
-    @Hidden
-    @GetMapping(path = "/photo/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE,ALL_VALUE})
+    @GetMapping(path = "/image/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE,ALL_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
-        return Files.readAllBytes(Paths.get(clientPath + filename));
+        return Files.readAllBytes(Paths.get(serverPath + filename));
     }
 
     @DeleteMapping("/{mediaId}")

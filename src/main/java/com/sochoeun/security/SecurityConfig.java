@@ -44,11 +44,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/medias/**").permitAll()
                         .requestMatchers("/api/articles/**").permitAll()
                         .requestMatchers("/api/contents/**").permitAll()
-                        .requestMatchers("/api/users/**").permitAll()
                         .requestMatchers("/api/roles/**").permitAll()
                         .requestMatchers("/api/teams/**").permitAll()
                         .requestMatchers("/api/students/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(GET,"/api/users/profile/**").permitAll()
                         .anyRequest()
                         .authenticated()
 

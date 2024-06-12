@@ -1,6 +1,5 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.constant.constant;
 import com.sochoeun.exception.NotFoundException;
 import com.sochoeun.repository.SlideRepository;
 import com.sochoeun.model.Slide;
@@ -14,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
@@ -26,8 +26,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class SlideServiceImpl implements SlideService {
     private final SlideRepository slideRepository;
 
-    @Value("${application.upload.server.path}"+"/slides/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/slide/")
+    String serverPath;
     // CRUD
     @Override
     public Slide createSlide(Slide request) {
@@ -64,8 +64,8 @@ public class SlideServiceImpl implements SlideService {
     @Override
     public String uploadPhoto(Integer slideId, MultipartFile file) {
         Slide slide = getSlide(slideId);
-        String getSlideName = slide.getName().toLowerCase();
-        String photoUrl = photoFunction.apply(getSlideName,file);
+        String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
+        String photoUrl = photoFunction.apply(photoName,file);
         slide.setImageUrl(photoUrl);
         slideRepository.save(slide);
         return photoUrl;
@@ -79,7 +79,7 @@ public class SlideServiceImpl implements SlideService {
 
     private final BiFunction<String,MultipartFile,String> photoFunction = (id, image) ->{
         try{
-            Path fileStorageLocation = Paths.get(clientPath).toAbsolutePath().normalize();
+            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
             if (!Files.exists(fileStorageLocation)){
                 Files.createDirectories(fileStorageLocation);
             }
@@ -91,7 +91,7 @@ public class SlideServiceImpl implements SlideService {
 
             return ServletUriComponentsBuilder
                     .fromCurrentContextPath() // localhost:8080
-                    .path("/api/slides/photo/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
+                    .path("/api/slides/image/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
         }catch (Exception e){
             throw new RuntimeException("Unable to save image");
         }

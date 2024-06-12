@@ -22,8 +22,8 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RequiredArgsConstructor
 public class TeamController {
     private final TeamService teamService;
-    @Value("${application.upload.server.path}"+"/teams/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/team/")
+    String serverPath;
     private BaseResponse baseResponse;
 
     @PostMapping
@@ -66,7 +66,7 @@ public class TeamController {
         return ResponseEntity.ok(baseResponse);
     }
 
-    @PutMapping(value = "/upload/photo", consumes = {"multipart/form-data"})
+    @PutMapping(value = "/upload/image", consumes = {"multipart/form-data"})
     public ResponseEntity<?> createTeam(
             @RequestParam Integer teamId,
             @RequestParam MultipartFile file
@@ -76,8 +76,8 @@ public class TeamController {
     }
 
     @Hidden
-    @GetMapping(path = "/profile/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
+    @GetMapping(path = "/image/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
-        return Files.readAllBytes(Paths.get(clientPath + filename));
+        return Files.readAllBytes(Paths.get(serverPath + filename));
     }
 }

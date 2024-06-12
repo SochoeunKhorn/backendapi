@@ -1,6 +1,7 @@
 package com.sochoeun.controller.user;
 
 import com.sochoeun.model.BaseResponse;
+import com.sochoeun.model.request.ChangePasswordRequest;
 import com.sochoeun.model.request.UserRequest;
 import com.sochoeun.model.response.UserResponse;
 import com.sochoeun.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.Principal;
 import java.util.List;
 
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
@@ -23,8 +25,8 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @Value("${application.upload.server.path}"+"/users/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/user/")
+    String serverPath;
     @GetMapping()
     public ResponseEntity<?> getUsers(@RequestParam(required = false) String firstname){
         List<UserResponse> users = userService.getUsers(firstname);
@@ -52,6 +54,11 @@ public class UserController {
     }
 
 
+    @PutMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request, Principal principal){
+        userService.changePassword(request,principal);
+        return ResponseEntity.ok("Password Changed");
+    }
 
     @PutMapping(value = "/update/profile",consumes = "multipart/form-data")
     public ResponseEntity<String> updateUserProfile(
@@ -64,7 +71,7 @@ public class UserController {
     @Hidden
     @GetMapping(path = "/profile/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
-        return Files.readAllBytes(Paths.get(clientPath + filename));
+        return Files.readAllBytes(Paths.get(serverPath + filename));
     }
 
 }

@@ -24,8 +24,8 @@ public class SlideController {
     private final SlideService slideService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.server.path}"+"/slides/")
-    String clientPath;
+    @Value("${application.upload.server.path}"+"/slide/")
+    String serverPath;
 
     @PostMapping
     public ResponseEntity<?> createSlide(@RequestBody Slide request){
@@ -68,7 +68,7 @@ public class SlideController {
     }
 
 
-    @PutMapping(value = "/upload/photo",consumes = {"multipart/form-data"})
+    @PutMapping(value = "/upload/image",consumes = {"multipart/form-data"})
     public ResponseEntity<String> updateUserProfile(
             @RequestParam Integer slideId,
             @RequestParam MultipartFile file){
@@ -77,8 +77,8 @@ public class SlideController {
     }
 
     @Hidden
-    @GetMapping(path = "/photo/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
+    @GetMapping(path = "/image/{filename}",produces = {IMAGE_PNG_VALUE,IMAGE_JPEG_VALUE})
     public byte[] getProfile(@PathVariable("filename") String filename) throws Exception{
-        return Files.readAllBytes(Paths.get(clientPath + filename));
+        return Files.readAllBytes(Paths.get(serverPath + filename));
     }
 }
