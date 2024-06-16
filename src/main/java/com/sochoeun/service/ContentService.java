@@ -2,6 +2,7 @@ package com.sochoeun.service;
 
 import com.sochoeun.model.Content;
 import com.sochoeun.model.request.ContentRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ContentService {
     void deleteContent(Integer contentId);
 
     List<Content> getAllByArticelId(Integer articleId);
+
+    String uploadPhoto(Integer contentId, MultipartFile file);
 }

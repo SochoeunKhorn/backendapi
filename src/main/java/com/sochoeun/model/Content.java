@@ -19,6 +19,7 @@ public class Content {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;

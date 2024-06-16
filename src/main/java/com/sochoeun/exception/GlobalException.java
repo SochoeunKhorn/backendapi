@@ -10,8 +10,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<?> exceptionHandler(Exception e){
-        return ResponseEntity.ok().body(e.getMessage());
+    public ResponseEntity<String> handleException(Exception e){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).
+                body("An error occurred:%s".formatted(e.getMessage()));
     }
 
     @ExceptionHandler(RoleNotFoundException.class)

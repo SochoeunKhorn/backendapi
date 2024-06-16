@@ -8,6 +8,7 @@ public class GeneralTest {
 
 
 
+    @Test
     public void Dir(){
         System.out.println(PHOTO_DIRECTORY);
     }
