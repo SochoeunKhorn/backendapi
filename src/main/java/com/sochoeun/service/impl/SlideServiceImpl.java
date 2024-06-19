@@ -1,6 +1,6 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.repository.SlideRepository;
 import com.sochoeun.model.Slide;
 import com.sochoeun.service.SlideService;
@@ -41,7 +41,7 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public Slide getSlide(Integer slideId) {
-        return slideRepository.findById(slideId).orElseThrow(()->new NotFoundException("Slide",slideId));
+        return slideRepository.findById(slideId).orElseThrow(()->new ResourceNotFoundException("Slide ID: %s not found.".formatted(slideId)));
     }
 
     @Override

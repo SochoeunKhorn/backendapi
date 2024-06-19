@@ -1,10 +1,13 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
+import com.sochoeun.exception.ArticleException;
+import com.sochoeun.exception.ResourceNotFoundException;
+import com.sochoeun.model.Content;
 import com.sochoeun.repository.ArticleRepository;
 import com.sochoeun.model.Article;
 import com.sochoeun.model.Category;
 import com.sochoeun.model.request.ArticleRequest;
+import com.sochoeun.repository.ContentRepository;
 import com.sochoeun.service.ArticleService;
 import com.sochoeun.service.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +20,7 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final CategoryService categoryService;
+    private final ContentRepository contentRepository;
     @Override
     public Article createArticle(ArticleRequest request) {
         Category category = categoryService.getCategory(request.getCategoryId());
@@ -35,7 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article getArticle(Integer articleId) {
-        return articleRepository.findById(articleId).orElseThrow(()->new NotFoundException("Article",articleId));
+        return articleRepository.findById(articleId).orElseThrow(()->new ResourceNotFoundException("Article ID:%s not found.".formatted(articleId)));
     }
 
     @Override
@@ -51,6 +55,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(Integer articleId) {
         getArticle(articleId);
+        List<Content> allByArticleId = contentRepository.findAllByArticle_Id(articleId);
+        if (!allByArticleId.isEmpty()){
+            throw new ArticleException(articleId);
+        }
         articleRepository.deleteById(articleId);
     }
 

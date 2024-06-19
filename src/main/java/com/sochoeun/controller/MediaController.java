@@ -4,7 +4,6 @@ import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Media;
 import com.sochoeun.service.ContentService;
 import com.sochoeun.service.MediaService;
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +35,8 @@ public class MediaController {
         return ResponseEntity.ok(baseResponse);
     }
 
-    /*@GetMapping("/content/{contentId}")
+    /*
+    @GetMapping("/content/{contentId}")
     public ResponseEntity<?> getAllMediaByContentId(@PathVariable Integer contentId){
         List<Media> allByContentId = mediaService.getAllByContentId(contentId);
         baseResponse = new BaseResponse();

@@ -1,5 +1,6 @@
 package com.sochoeun.controller.auth;
 
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Role;
 import com.sochoeun.model.User;
 import com.sochoeun.repository.RoleRepository;
@@ -28,14 +29,18 @@ public class AuthService {
     private final JwtService jwtService;
 
     public AuthResponse register(RegisterRequest request){
+
         // get roles from request
         List<String> strRole =request.getRoles();
         List<Role> roles = new ArrayList<>();
         for (String role:strRole){
             Role getRole = roleRepository.findByName(role).orElseThrow(
-                    () -> new RuntimeException("Role:%s not found".formatted(role)));
+                    () -> new ResourceNotFoundException("Role with id: %s not found.".formatted(role)));
             roles.add(getRole);
         }
+
+
+
         // save user to db
         var user = User.builder()
                 .firstname(request.getFirstName())
@@ -68,29 +73,24 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request){
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword())
-        );
-        // generate token
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-        var token = jwtService.generateToken(user);
-       // log.info("user{}",user.getStatus());
-        var response = userRepository.findUserByEmail(request.getEmail());
 
-        /*authResponse.setFirstName(response.getFirstname());
-        authResponse.setLastName(response.getLastname());
-        authResponse.setEmail(response.getEmail());
-        authResponse.setProfile(response.getProfile());
-        authResponse.setRoles(response.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()));
-*/
-        String getToken = token;
-        return AuthResponse.builder()
-                .firstName(response.getFirstname())
-                .lastName(response.getLastname())
-                .email(response.getEmail())
-                .profile(response.getProfile())
-                .roles(response.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                .token(getToken)
-                .build();
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword())
+            );
+            // generate token
+            var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+            var token = jwtService.generateToken(user);
+            // log.info("user{}",user.getStatus());
+            var response = userRepository.findUserByEmail(request.getEmail());
+
+            String getToken = token;
+            return AuthResponse.builder()
+                    .firstName(response.getFirstname())
+                    .lastName(response.getLastname())
+                    .email(response.getEmail())
+                    .profile(response.getProfile())
+                    .roles(response.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
+                    .token(getToken)
+                    .build();
     }
 }

@@ -1,6 +1,6 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.RoleNotFoundException;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Role;
 import com.sochoeun.model.User;
 import com.sochoeun.model.request.ChangePasswordRequest;
@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
         List<Role> roles = new ArrayList<>();
         for (String role:strRole){
             Role getRole = roleRepository.findByName(role).orElseThrow(
-                    () -> new RoleNotFoundException(role));
+                    () -> new ResourceNotFoundException("Role: %s not found.".formatted(role)));
             roles.add(getRole);
         }
 

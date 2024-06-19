@@ -1,5 +1,6 @@
 package com.sochoeun.controller;
 
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Content;
 import com.sochoeun.model.request.ContentRequest;
@@ -44,6 +45,17 @@ public class ContentController {
         return ResponseEntity.ok(baseResponse);
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<?> getAllContentByStatus(){
+        List<Content> allContent = contentService.getAllContentByStats("published");
+        if (allContent.isEmpty()){
+            throw new ResourceNotFoundException("No Data");
+        }
+        baseResponse = new BaseResponse();
+        baseResponse.success(allContent);
+        return ResponseEntity.ok(baseResponse);
+    }
+
     @GetMapping("/{contentId}")
     public ResponseEntity<?> getContent(@PathVariable Integer contentId){
         Content content = contentService.getContent(contentId);
@@ -77,7 +89,7 @@ public class ContentController {
     }
 
     @PutMapping(value = "/upload/image", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> createTeam(
+    public ResponseEntity<?> uploadImage(
             @RequestParam Integer contentId,
             @RequestParam MultipartFile file
     ){

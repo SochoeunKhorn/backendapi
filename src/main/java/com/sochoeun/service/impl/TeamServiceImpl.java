@@ -1,6 +1,6 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Team;
 import com.sochoeun.repository.TeamRepository;
 import com.sochoeun.service.TeamService;
@@ -42,7 +42,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team getTeam(Integer teamId) {
-        return teamRepository.findById(teamId).orElseThrow(()->new NotFoundException("Team",teamId));
+        return teamRepository.findById(teamId).orElseThrow(()->new ResourceNotFoundException("Team with Id: %s not found.".formatted(teamId)));
     }
 
     @Override

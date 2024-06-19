@@ -19,6 +19,6 @@ public class Category {
     private String nameKh;
     private String nameEn;
 
-    /*@OneToMany(mappedBy = "category")
+    /*@OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<Article> articles;*/
 }

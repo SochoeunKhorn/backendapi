@@ -1,14 +1,12 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.ManageStudent;
 import com.sochoeun.repository.MangeStudentRepository;
 import com.sochoeun.service.ManageStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class ManageStudentServiceImpl implements ManageStudentService {
 
     @Override
     public ManageStudent get(Integer id) {
-        return mangeStudentRepository.findById(id).orElseThrow(()->new NotFoundException("ManageStudent",id));
+        return mangeStudentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Content ID: %s not found".formatted(id)));
     }
 
     @Override

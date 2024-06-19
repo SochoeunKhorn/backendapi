@@ -10,4 +10,6 @@ import java.util.List;
 public interface ContentRepository extends JpaRepository<Content,Integer> {
     // findAllByArticleId
     List<Content> findAllByArticle_Id(Integer articleId);
+
+    List<Content> findAllByStatus(String status);
 }

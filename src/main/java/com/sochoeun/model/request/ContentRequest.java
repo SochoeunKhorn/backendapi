@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class ContentRequest {
     private String title;
     private String description;
+    private String status;
     private int articleId;
 }

@@ -1,7 +1,6 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
-import com.sochoeun.model.Team;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.repository.ContentRepository;
 import com.sochoeun.model.Article;
 import com.sochoeun.model.Content;
@@ -19,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +42,8 @@ public class ContentServiceImpl implements ContentService {
         Content content = Content.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
+                .status("pending")
+                .createdAt(LocalDateTime.now())
                 .article(article)
                 .build();
         return contentRepository.save(content);
@@ -62,8 +64,13 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
+    public List<Content> getAllContentByStats(String status) {
+        return contentRepository.findAllByStatus(status);
+    }
+
+    @Override
     public Content getContent(Integer contentId) {
-        Content content = contentRepository.findById(contentId).orElseThrow(() -> new NotFoundException("Content", contentId));
+        Content content = contentRepository.findById(contentId).orElseThrow(() -> new ResourceNotFoundException("Content ID: %s not found.".formatted(contentId)));
         content.setMediaList(mediaService.getAllByContentId(contentId));
         return content;
     }
@@ -74,6 +81,7 @@ public class ContentServiceImpl implements ContentService {
         Content content = getContent(contentId);
         content.setTitle(request.getTitle());
         content.setDescription(request.getDescription());
+        content.setStatus(request.getStatus());
         content.setArticle(article);
         return contentRepository.save(content);
     }

@@ -1,6 +1,6 @@
 package com.sochoeun.service.impl;
 
-import com.sochoeun.exception.NotFoundException;
+import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Role;
 import com.sochoeun.repository.RoleRepository;
 import com.sochoeun.service.RoleService;
@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRoleById(Integer roleId) {
-        return roleRepository.findById(roleId).orElseThrow(()->new NotFoundException("Role",roleId));
+        return roleRepository.findById(roleId).orElseThrow(()->new ResourceNotFoundException("Role with Id: %s not found.".formatted(roleId)));
     }
 
     @Override
