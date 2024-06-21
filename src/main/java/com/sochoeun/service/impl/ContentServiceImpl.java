@@ -52,20 +52,32 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public List<Content> getAllContent() {
         List<Content> contentList = contentRepository.findAll();
-        List<Content> collect = contentList.stream()
-                .map(content -> {
+        return contentList.stream()
+                .peek(content -> {
                     Integer contentId = content.getId();
                     List<Media> allByContentId = mediaService.getAllByContentId(contentId);
                     content.setMediaList(allByContentId);
-                    return content;
                 })
                 .collect(Collectors.toList());
-        return collect;
     }
 
     @Override
     public List<Content> getAllContentByStats(String status) {
-        return contentRepository.findAllByStatus(status);
+        List<Content> allByStatus = contentRepository.findAllByStatus(status);
+        return allByStatus.stream()
+                .peek(content -> {
+                    Integer contentId = content.getId();
+                    List<Media> allByContentId = mediaService.getAllByContentId(contentId);
+                    content.setMediaList(allByContentId);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateStatus(Integer contentId, String status) {
+        Content content = getContent(contentId);
+        content.setStatus(status);
+        contentRepository.save(content);
     }
 
     @Override

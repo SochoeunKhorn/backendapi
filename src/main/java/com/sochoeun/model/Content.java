@@ -1,6 +1,7 @@
 package com.sochoeun.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class Content {
     @JoinColumn(name = "article_id")
     private Article article;
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Transient
     private List<Media> mediaList;
 }

@@ -47,12 +47,17 @@ public class ContentController {
 
     @GetMapping("/status")
     public ResponseEntity<?> getAllContentByStatus(){
-        List<Content> allContent = contentService.getAllContentByStats("published");
-        if (allContent.isEmpty()){
-            throw new ResourceNotFoundException("No Data");
-        }
+        List<Content> allContent = contentService.getAllContentByStats("PUBLISHED");
         baseResponse = new BaseResponse();
         baseResponse.success(allContent);
+        return ResponseEntity.ok(baseResponse);
+    }
+
+    @PutMapping("/update/status/{contentId}")
+    public ResponseEntity<?> updateContent(@PathVariable Integer contentId){
+        contentService.updateStatus(contentId,"PUBLISHED");
+        baseResponse = new BaseResponse();
+        baseResponse.success("Content ID: %s is published".formatted(contentId));
         return ResponseEntity.ok(baseResponse);
     }
 

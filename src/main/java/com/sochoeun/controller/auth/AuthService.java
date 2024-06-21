@@ -38,9 +38,6 @@ public class AuthService {
                     () -> new ResourceNotFoundException("Role with id: %s not found.".formatted(role)));
             roles.add(getRole);
         }
-
-
-
         // save user to db
         var user = User.builder()
                 .firstname(request.getFirstName())
@@ -52,16 +49,8 @@ public class AuthService {
                 .build();
         User save = userRepository.save(user);
 
-        // response register -> success
-        /*AuthResponse response = new AuthResponse();
-        response.setFirstName(save.getFirstname());
-        response.setLastName(save.getLastname());
-        response.setEmail(save.getEmail());
-        response.setProfile(save.getProfile());
-        response.setRoles(save.getRoles().stream().map(role -> role.getName()).collect(Collectors.toList()));
-
-        return response;*/
         String token = jwtService.generateToken(save);
+        var refresh_token = jwtService.generateRefreshToken(user);
         return AuthResponse.builder()
                 .firstName(save.getFirstname())
                 .lastName(save.getLastname())
@@ -69,6 +58,7 @@ public class AuthService {
                 .profile(save.getProfile())
                 .roles(save.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
                 .token(token)
+                .refreshToken(refresh_token)
                 .build();
     }
 
@@ -80,17 +70,18 @@ public class AuthService {
             // generate token
             var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
             var token = jwtService.generateToken(user);
+            var refresh_token = jwtService.generateRefreshToken(user);
             // log.info("user{}",user.getStatus());
             var response = userRepository.findUserByEmail(request.getEmail());
 
-            String getToken = token;
             return AuthResponse.builder()
                     .firstName(response.getFirstname())
                     .lastName(response.getLastname())
                     .email(response.getEmail())
                     .profile(response.getProfile())
                     .roles(response.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
-                    .token(getToken)
+                    .token(token)
+                    .refreshToken(refresh_token)
                     .build();
     }
 }

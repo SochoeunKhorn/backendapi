@@ -27,4 +27,11 @@ public class BaseResponse {
         this.object = object;
     }
 
+    public void noData(Object object){
+        this.timestamp = LocalDateTime.now();
+        this.httpStatus =  HttpStatus.NOT_FOUND;
+        this.message = "No Data";
+        this.object = object;
+    }
+
 }

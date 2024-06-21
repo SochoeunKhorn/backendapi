@@ -49,6 +49,11 @@ public class JwtService {
         return buildToken(extraClaims, userDetails, jwtExpiration);
     }
 
+    /* generate refresh token*/
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails,refreshExpiration);
+    }
+
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails,
@@ -94,5 +99,6 @@ public class JwtService {
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
 
 }

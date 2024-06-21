@@ -26,7 +26,9 @@ public class AuthController {
             return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
         }
         AuthResponse registered = authService.register(request);
-        return ResponseEntity.ok(registered);
+        BaseResponse baseResponse= new BaseResponse();
+        baseResponse.success(registered);
+        return ResponseEntity.ok(baseResponse);
     }
 
     @PostMapping("/login")
