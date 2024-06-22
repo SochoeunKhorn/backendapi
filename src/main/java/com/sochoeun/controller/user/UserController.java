@@ -17,6 +17,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.List;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
@@ -25,8 +26,8 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @Value("${application.upload.server.path}"+"/user/")
-    String serverPath;
+   // @Value("${application.upload.server.path}"+"/user/")
+    String serverPath=PHOTO_DIRECTORY;
     @GetMapping()
     public ResponseEntity<?> getUsers(@RequestParam(required = false) String firstname){
         List<UserResponse> users = userService.getUsers(firstname);

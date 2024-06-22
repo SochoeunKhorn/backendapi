@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG_VALUE;
 import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 
@@ -24,8 +25,8 @@ public class SlideController {
     private final SlideService slideService;
     private BaseResponse baseResponse;
 
-    @Value("${application.upload.server.path}"+"/slide/")
-    String serverPath;
+  //  @Value("${application.upload.server.path}"+"/slide/")
+    String serverPath = PHOTO_DIRECTORY;
 
     @PostMapping
     public ResponseEntity<?> createSlide(@RequestBody Slide request){

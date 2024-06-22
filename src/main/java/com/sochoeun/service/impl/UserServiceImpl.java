@@ -30,6 +30,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 
@@ -41,8 +42,8 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${application.upload.server.path}"+"/user/")
-    String serverPath;
+  //  @Value("${application.upload.server.path}"+"/user/")
+    String serverPath = PHOTO_DIRECTORY;
     @Override
     public List<UserResponse> getUsers(String firstname) {
         List<User> all;

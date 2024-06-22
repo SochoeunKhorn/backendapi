@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -28,8 +29,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
 
-    @Value("${application.upload.server.path}"+"/team/")
-    String serverPath;
+    //@Value("${application.upload.server.path}"+"/team/")
+    String serverPath=PHOTO_DIRECTORY;
     @Override
     public Team createTeam(Team request) {
         return teamRepository.save(request);

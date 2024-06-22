@@ -1,13 +1,8 @@
+== deploy on docker hub ==
+
+----- docker file -----
 version: "3"
 services:
-  react:
-    container_name: react-frontend
-    image: lihieng15/frontend
-    restart: unless-stopped
-    ports:
-      - "8000:8000"
-    depends_on:
-      - java
   db:
     container_name: postgres-db
     image: postgres
@@ -19,7 +14,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ${PWD}/mounting:/var/lib/postgresql/data
+      - mounting:/var/lib/postgresql/data
   java:
     container_name: spring-backend
     image: sochoeun/server-api:latest
@@ -34,3 +29,4 @@ services:
       - "8080:8080"
 volumes:
   mounting:
+----- docker file -----

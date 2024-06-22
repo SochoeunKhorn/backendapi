@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -25,8 +26,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class MediaServiceImpl implements MediaService {
     private final MediaRepository mediaRepository;
 
-    @Value("${application.upload.server.path}"+"/media/")
-    String serverPath;
+   // @Value("${application.upload.server.path}"+"/media/")
+    String serverPath=PHOTO_DIRECTORY;
     @Override
     public Media createMedia(Media request) {
         return mediaRepository.save(request);

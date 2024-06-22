@@ -19,6 +19,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -26,8 +27,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 public class SlideServiceImpl implements SlideService {
     private final SlideRepository slideRepository;
 
-    @Value("${application.upload.server.path}"+"/slide/")
-    String serverPath;
+    //@Value("${application.upload.server.path}"+"/slide/")
+    String serverPath=PHOTO_DIRECTORY;
     // CRUD
     @Override
     public Slide createSlide(Slide request) {

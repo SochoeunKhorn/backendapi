@@ -26,6 +26,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -34,8 +35,8 @@ public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
     private final MediaService mediaService;
     private final ArticleService articleService;
-    @Value("${application.upload.server.path}"+"/content/")
-    String serverPath;
+   // @Value("${application.upload.server.path}"+"/content/")
+    String serverPath=PHOTO_DIRECTORY;
     @Override
     public Content createContent(ContentRequest request) {
         Article article = articleService.getArticle(request.getArticleId());
