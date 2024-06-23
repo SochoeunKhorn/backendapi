@@ -52,6 +52,7 @@ public class AuthService {
         String token = jwtService.generateToken(save);
         var refresh_token = jwtService.generateRefreshToken(user);
         return AuthResponse.builder()
+                .id(save.getId())
                 .firstName(save.getFirstname())
                 .lastName(save.getLastname())
                 .email(save.getEmail())
@@ -75,6 +76,7 @@ public class AuthService {
             var response = userRepository.findUserByEmail(request.getEmail());
 
             return AuthResponse.builder()
+                    .id(user.getId())
                     .firstName(response.getFirstname())
                     .lastName(response.getLastname())
                     .email(response.getEmail())

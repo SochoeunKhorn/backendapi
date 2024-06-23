@@ -16,6 +16,7 @@ public class Team {
     private String name;
     @Column(columnDefinition = "TEXT")
     private String description;
+    @Column(columnDefinition = "TEXT")
     private String bio;
     private String photoUrl;
 }

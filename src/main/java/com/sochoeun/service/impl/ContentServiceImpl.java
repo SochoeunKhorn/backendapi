@@ -93,7 +93,7 @@ public class ContentServiceImpl implements ContentService {
         Content content = getContent(contentId);
         content.setTitle(request.getTitle());
         content.setDescription(request.getDescription());
-        content.setStatus(request.getStatus());
+        content.setThumbnail(request.getThumbnail());
         content.setArticle(article);
         return contentRepository.save(content);
     }
@@ -105,7 +105,7 @@ public class ContentServiceImpl implements ContentService {
     }
 
     @Override
-    public List<Content> getAllByArticelId(Integer articleId) {
+    public List<Content> getAllByArticleId(Integer articleId) {
         articleService.getArticle(articleId);
         return contentRepository.findAllByArticle_Id(articleId);
     }
@@ -115,7 +115,7 @@ public class ContentServiceImpl implements ContentService {
         String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
         String photoUrl  =photoFunction.apply(photoName,file);
         Content content = getContent(contentId);
-        content.setImageUrl(photoUrl);
+        content.setThumbnail(photoUrl);
         contentRepository.save(content);
         return photoUrl;
     }

@@ -7,17 +7,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ContentService {
+    /*  CRUD */
     Content createContent(ContentRequest request);
     List<Content> getAllContent();
+    Content getContent(Integer contentId);
+    Content updateContent(Integer contentId,ContentRequest request);
+
 
     /*add new */
     List<Content> getAllContentByStats(String status);
     void updateStatus(Integer contentId, String status);
-    Content getContent(Integer contentId);
-    Content updateContent(Integer contentId,ContentRequest request);
+
     void deleteContent(Integer contentId);
 
-    List<Content> getAllByArticelId(Integer articleId);
+    List<Content> getAllByArticleId(Integer articleId);
 
     String uploadPhoto(Integer contentId, MultipartFile file);
 }

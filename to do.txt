@@ -1,0 +1,17 @@
+
+    - testing all controller
+        + category: OK
+            - no duplicate
+            - field not empty or null
+        + article: OK
+            - cascade
+        + content:OK
+            - imageUrl  => thumbnail
+            - update    => upload thumbnail
+            - add status
+                PUBLISHED,PENDING
+        + ManageStudent:OK
+        + Slide:Ok
+        + Team:Ok
+        + Media
+            - change media => album

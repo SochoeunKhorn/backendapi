@@ -30,8 +30,8 @@ application:
         expiration: 604800000 # 7 days
   upload:
     server:
-     #path: /home/sochoeun/uploads/
-     path: C:\Users\V.I.P/Downloads/uploads/
+     path: /home/sochoeun/uploads/
+     #path: C:\Users\V.I.P/Downloads/uploads/
 
 
 # openapi 3

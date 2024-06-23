@@ -17,8 +17,10 @@ public class Media {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     private String name;
     private String mediaType;
     private String mediaUrl;
     private int contentId;
+
 }

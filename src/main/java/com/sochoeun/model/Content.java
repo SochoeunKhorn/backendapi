@@ -22,7 +22,8 @@ public class Content {
     private String title;
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String imageUrl;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private String thumbnail;
     private String status;
     @JsonFormat(pattern = "yyyy-MM-dd HH-mm-ss")
     @Column(updatable = false)

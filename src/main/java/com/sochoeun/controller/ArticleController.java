@@ -5,6 +5,7 @@ import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.request.ArticleRequest;
 import com.sochoeun.service.ArticleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +20,14 @@ public class ArticleController {
 
     @PostMapping
     public ResponseEntity<?> createArticle(@RequestBody ArticleRequest request){
-        Article article = articleService.createArticle(request);
-        baseResponse = new BaseResponse();
-        baseResponse.success(article);
-        return ResponseEntity.ok(baseResponse);
+        try {
+            Article article = articleService.createArticle(request);
+            baseResponse = new BaseResponse();
+            baseResponse.success(article);
+            return ResponseEntity.ok(baseResponse);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("Unexpected error");
+        }
     }
 
     @GetMapping

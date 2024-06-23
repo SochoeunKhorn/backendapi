@@ -1,11 +1,9 @@
 package com.sochoeun.controller;
 
-import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Content;
 import com.sochoeun.model.request.ContentRequest;
 import com.sochoeun.service.ContentService;
-import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +85,7 @@ public class ContentController {
 
     @GetMapping("/article/{articleId}")
     public ResponseEntity<?> getAllContent(@PathVariable Integer articleId){
-        List<Content> allContent = contentService.getAllByArticelId(articleId);
+        List<Content> allContent = contentService.getAllByArticleId(articleId);
         baseResponse = new BaseResponse();
         baseResponse.success(allContent);
         return ResponseEntity.ok(baseResponse);

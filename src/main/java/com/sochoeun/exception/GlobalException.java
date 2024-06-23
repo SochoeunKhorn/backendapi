@@ -76,7 +76,6 @@ public class GlobalException extends ResponseEntityExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 LocalDateTime.now()
         );
-
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(Exception.class)

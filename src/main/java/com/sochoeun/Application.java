@@ -1,7 +1,9 @@
 package com.sochoeun;
 
-import com.sochoeun.model.Role;
-import com.sochoeun.repository.RoleRepository;
+import com.sochoeun.model.Article;
+import com.sochoeun.model.Category;
+import com.sochoeun.repository.ArticleRepository;
+import com.sochoeun.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,11 +21,21 @@ public class Application {
 
 	@Bean
 	public CommandLineRunner commandLineRunner(
-			RoleRepository roleRepository
+			CategoryRepository categoryRepository,
+			ArticleRepository articleRepository
 	) {
 		return args -> {
-			if (roleRepository.findByName("ADMIN").isEmpty()) {
-				roleRepository.save(Role.builder().name("ADMIN").build());
+
+			if(categoryRepository.count() == 0) {
+				categoryRepository.save(Category.builder()
+						.nameKh("category")
+						.nameEn("category")
+						.build());
+			}
+
+			if(articleRepository.count() == 0) {
+				Category category = categoryRepository.findById(1).orElseThrow();
+				articleRepository.save(Article.builder().name("Article").category(category).build());
 			}
 
 		};
