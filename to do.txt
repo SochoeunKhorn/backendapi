@@ -13,5 +13,16 @@
         + ManageStudent:OK
         + Slide:Ok
         + Team:Ok
-        + Media
+        + Media: Ok
             - change media => album
+
+== deploy ==
+    docker login
+    docker build -t sochoeun/api-production:1.0.0 .
+    docker push sochoeun/api-production:1.0.0
+    docker pull sochoeun/api-production:1.0.0
+
+== deploy ==
+    docker login
+    docker build -t sochoeun/api-production:1.0.1 .
+    docker push sochoeun/api-production:1.0.1

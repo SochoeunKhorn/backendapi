@@ -52,10 +52,10 @@ public class ContentController {
     }
 
     @PutMapping("/update/status/{contentId}")
-    public ResponseEntity<?> updateContent(@PathVariable Integer contentId){
-        contentService.updateStatus(contentId,"PUBLISHED");
+    public ResponseEntity<?> updateContentStatus(@PathVariable Integer contentId,@RequestParam String status){
+        contentService.updateStatus(contentId,status);
         baseResponse = new BaseResponse();
-        baseResponse.success("Content ID: %s is published".formatted(contentId));
+        baseResponse.success("Content ID: %s updated to %s".formatted(contentId,status));
         return ResponseEntity.ok(baseResponse);
     }
 

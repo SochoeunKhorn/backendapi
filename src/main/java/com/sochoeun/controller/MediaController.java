@@ -12,8 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import static com.fasterxml.jackson.databind.cfg.CoercionInputShape.Array;
 import static org.springframework.util.MimeTypeUtils.*;
 
 @RestController
@@ -34,23 +37,6 @@ public class MediaController {
         baseResponse.success(newMedia);
         return ResponseEntity.ok(baseResponse);
     }
-
-    /*
-    @GetMapping("/content/{contentId}")
-    public ResponseEntity<?> getAllMediaByContentId(@PathVariable Integer contentId){
-        List<Media> allByContentId = mediaService.getAllByContentId(contentId);
-        baseResponse = new BaseResponse();
-        baseResponse.success(allByContentId);
-        return ResponseEntity.ok(allByContentId);
-    }
-
-    @GetMapping("/mediaType/{type}")
-    public ResponseEntity<?> getAllMediaByMediaType(@PathVariable String type){
-        List<Media> allByMediaType = mediaService.getAllByMediaType(type);
-        baseResponse = new BaseResponse();
-        baseResponse.success(allByMediaType);
-        return ResponseEntity.ok(baseResponse);
-    }*/
 
     @GetMapping()
     public ResponseEntity<?> getAllByContentIdAndMediaType(
@@ -95,5 +81,13 @@ public class MediaController {
         baseResponse = new BaseResponse();
         baseResponse.success("Media ID: %s deleted".formatted(mediaId));
         return ResponseEntity.ok(baseResponse);
+    }
+
+    @PostMapping(value = "/multi/file",consumes = "multipart/form-data"  )
+    public List<String> uploadMultipleFiles(@RequestPart MultipartFile[] files){
+        List<String> filenames = new ArrayList<>();
+        Arrays.asList(files).stream()
+                .forEach(file -> filenames.add(file.getOriginalFilename()));
+        return filenames;
     }
 }

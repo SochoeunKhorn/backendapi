@@ -1,11 +1,13 @@
 package com.sochoeun.service.impl;
 
 import com.sochoeun.exception.ResourceNotFoundException;
+import com.sochoeun.model.Album;
 import com.sochoeun.repository.ContentRepository;
 import com.sochoeun.model.Article;
 import com.sochoeun.model.Content;
 import com.sochoeun.model.Media;
 import com.sochoeun.model.request.ContentRequest;
+import com.sochoeun.service.AlbumService;
 import com.sochoeun.service.ArticleService;
 import com.sochoeun.service.ContentService;
 import com.sochoeun.service.MediaService;
@@ -32,7 +34,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @RequiredArgsConstructor
 public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
-    private final MediaService mediaService;
+    private final AlbumService albumService;
     private final ArticleService articleService;
     @Value("${application.upload.server.path}"+"/content/")
     String serverPath;
@@ -42,7 +44,7 @@ public class ContentServiceImpl implements ContentService {
         Content content = Content.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .status("pending")
+                .status("pending".toUpperCase())
                 .createdAt(LocalDateTime.now())
                 .article(article)
                 .build();
@@ -55,8 +57,8 @@ public class ContentServiceImpl implements ContentService {
         return contentList.stream()
                 .peek(content -> {
                     Integer contentId = content.getId();
-                    List<Media> allByContentId = mediaService.getAllByContentId(contentId);
-                    content.setMediaList(allByContentId);
+                    List<Album> allByContentId = albumService.listAlbums(contentId);
+                    content.setAlbumList(allByContentId);
                 })
                 .collect(Collectors.toList());
     }
@@ -67,8 +69,8 @@ public class ContentServiceImpl implements ContentService {
         return allByStatus.stream()
                 .peek(content -> {
                     Integer contentId = content.getId();
-                    List<Media> allByContentId = mediaService.getAllByContentId(contentId);
-                    content.setMediaList(allByContentId);
+                    List<Album> allByContentId = albumService.listAlbums(contentId);
+                    content.setAlbumList(allByContentId);
                 })
                 .collect(Collectors.toList());
     }
@@ -76,14 +78,14 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public void updateStatus(Integer contentId, String status) {
         Content content = getContent(contentId);
-        content.setStatus(status);
+        content.setStatus(status.toUpperCase());
         contentRepository.save(content);
     }
 
     @Override
     public Content getContent(Integer contentId) {
         Content content = contentRepository.findById(contentId).orElseThrow(() -> new ResourceNotFoundException("Content ID: %s not found.".formatted(contentId)));
-        content.setMediaList(mediaService.getAllByContentId(contentId));
+        content.setAlbumList(albumService.listAlbums(contentId));
         return content;
     }
 

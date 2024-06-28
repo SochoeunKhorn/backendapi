@@ -1,6 +1,28 @@
 
 services:
+  postgres-db:
+    container_name: Postgres_DB
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./mounting:/var/lib/postgresql/data
   backendapi:
-    build: .
+    container_name: Spring_API
+    image: sochoeun/server-api:latest
+    restart: unless-stopped
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-db:5432/postgres_db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+    depends_on:
+      - postgres-db
     ports:
       - "8080:8080"
+    volumes:
+      - ./photos:/home/southwest/uploads:wr

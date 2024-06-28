@@ -34,5 +34,5 @@ public class Content {
 
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @Transient
-    private List<Media> mediaList;
+    private List<Album> albumList;
 }

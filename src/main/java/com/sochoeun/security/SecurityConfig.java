@@ -41,6 +41,7 @@ public class SecurityConfig {
                 req
                         .requestMatchers(WHITE_LIST_URL).permitAll()
                         .requestMatchers("/api/categories/**").permitAll()
+                        .requestMatchers("/api/albums/**").permitAll()
                         .requestMatchers("/api/slides/**").permitAll()
                         .requestMatchers("/api/medias/**").permitAll()
                         .requestMatchers("/api/articles/**").permitAll()

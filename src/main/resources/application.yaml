@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   datasource:
     #url: jdbc:postgresql://194.233.87.193:5432/postgres
@@ -30,7 +32,7 @@ application:
         expiration: 604800000 # 7 days
   upload:
     server:
-     path: /home/sochoeun/uploads/
+     path: /home/southwest/uploads/
      #path: C:\Users\V.I.P/Downloads/uploads/
 
 
@@ -40,4 +42,5 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
 
