@@ -6,6 +6,7 @@ import com.sochoeun.model.request.UserRequest;
 import com.sochoeun.model.response.UserResponse;
 import com.sochoeun.service.UserService;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -23,17 +24,12 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@Tag(name = "USER")
 public class UserController {
     private final UserService userService;
     @Value("${application.upload.server.path}"+"/user/")
     String serverPath;
-    @GetMapping()
-    public ResponseEntity<?> getUsers(@RequestParam(required = false) String firstname){
-        List<UserResponse> users = userService.getUsers(firstname);
-        BaseResponse baseResponse = new BaseResponse();
-        baseResponse.success(users);
-        return ResponseEntity.ok(baseResponse);
-    }
+
 
     @PostMapping("/disable/{userId}")
     public ResponseEntity<?> disableUser(@PathVariable Integer userId){
@@ -66,6 +62,13 @@ public class UserController {
             @RequestParam MultipartFile file){
         String profile = userService.uploadProfile(userId, file);
         return ResponseEntity.ok().body(profile);
+    }
+    @GetMapping()
+    public ResponseEntity<?> getUsers(@RequestParam(required = false) String firstname){
+        List<UserResponse> users = userService.getUsers(firstname);
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.success(users);
+        return ResponseEntity.ok(baseResponse);
     }
 
     @Hidden

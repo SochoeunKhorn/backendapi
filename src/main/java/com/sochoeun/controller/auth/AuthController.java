@@ -2,6 +2,7 @@ package com.sochoeun.controller.auth;
 
 import com.sochoeun.model.BaseResponse;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
+@Tag(name = "AUTHENTICATION")
 public class AuthController {
     private final AuthService authService;
 

@@ -1,5 +1,6 @@
 package com.sochoeun.service.impl;
 
+import com.sochoeun.config.FileUploadService;
 import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Team;
 import com.sochoeun.repository.TeamRepository;
@@ -27,7 +28,7 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 @Slf4j
 public class TeamServiceImpl implements TeamService {
     private final TeamRepository teamRepository;
-
+    private final FileUploadService fileUploadService;
     @Value("${application.upload.server.path}"+"/team/")
     String serverPath;
     @Override
@@ -42,7 +43,10 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Team getTeam(Integer teamId) {
-        return teamRepository.findById(teamId).orElseThrow(()->new ResourceNotFoundException("Team with Id: %s not found.".formatted(teamId)));
+        return teamRepository.findById(teamId).
+                orElseThrow(
+                        ()->new ResourceNotFoundException("Team with Id: %s not found.".formatted(teamId))
+                );
     }
 
     @Override
@@ -63,36 +67,11 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public String uploadPhoto(Integer teamId, MultipartFile file) {
         String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        String photoUrl  =photoFunction.apply(photoName,file);
+        String photoUrl  = fileUploadService.generateUrl(serverPath,photoName,file,"/api/teams/image/");
         Team team = getTeam(teamId);
         team.setPhotoUrl(photoUrl);
         teamRepository.save(team);
         return photoUrl;
     }
 
-    private final Function<String,String> fileExtension =
-            filename -> Optional.of(filename)
-                    .filter(name -> name.contains("."))
-                    .map(name
-                            -> "." + name.substring(filename.lastIndexOf(".")+1)).orElse(".png");
-
-    private final BiFunction<String,MultipartFile,String> photoFunction = (id, image) ->{
-        try{
-            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)){
-                Files.createDirectories(fileStorageLocation);
-            }
-
-            Files.copy(
-                    image.getInputStream(),
-                    fileStorageLocation.resolve(id + fileExtension.apply(image.getOriginalFilename())), // filename
-                    REPLACE_EXISTING);
-
-            return ServletUriComponentsBuilder
-                    .fromCurrentContextPath() // localhost:8080
-                    .path("/api/teams/image/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
-        }catch (Exception e){
-            throw new RuntimeException("Unable to save image");
-        }
-    };
 }

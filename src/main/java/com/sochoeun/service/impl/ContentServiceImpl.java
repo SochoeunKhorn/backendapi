@@ -1,16 +1,15 @@
 package com.sochoeun.service.impl;
 
+import com.sochoeun.config.FileUploadService;
 import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Album;
 import com.sochoeun.repository.ContentRepository;
 import com.sochoeun.model.Article;
 import com.sochoeun.model.Content;
-import com.sochoeun.model.Media;
 import com.sochoeun.model.request.ContentRequest;
 import com.sochoeun.service.AlbumService;
 import com.sochoeun.service.ArticleService;
 import com.sochoeun.service.ContentService;
-import com.sochoeun.service.MediaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,6 +35,7 @@ public class ContentServiceImpl implements ContentService {
     private final ContentRepository contentRepository;
     private final AlbumService albumService;
     private final ArticleService articleService;
+    private final FileUploadService fileUploadService;
     @Value("${application.upload.server.path}"+"/content/")
     String serverPath;
     @Override
@@ -115,7 +115,7 @@ public class ContentServiceImpl implements ContentService {
     @Override
     public String uploadPhoto(Integer contentId, MultipartFile file) {
         String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        String photoUrl  =photoFunction.apply(photoName,file);
+        String photoUrl  = fileUploadService.generateUrl(serverPath,photoName,file,"/api/contents/image/");
         Content content = getContent(contentId);
         content.setThumbnail(photoUrl);
         contentRepository.save(content);

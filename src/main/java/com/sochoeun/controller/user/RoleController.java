@@ -3,6 +3,7 @@ package com.sochoeun.controller.user;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Role;
 import com.sochoeun.service.RoleService;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/roles")
 @RequiredArgsConstructor
+@Hidden
 public class RoleController {
     private final RoleService roleService;
     private BaseResponse baseResponse;

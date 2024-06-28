@@ -4,6 +4,7 @@ import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Content;
 import com.sochoeun.model.request.ContentRequest;
 import com.sochoeun.service.ContentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RestController
 @RequestMapping("/api/contents")
 @RequiredArgsConstructor
+@Tag(name = "CONTENTS")
 public class ContentController {
     private final ContentService contentService;
     private BaseResponse baseResponse;

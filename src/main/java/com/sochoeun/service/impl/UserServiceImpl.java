@@ -1,5 +1,6 @@
 package com.sochoeun.service.impl;
 
+import com.sochoeun.config.FileUploadService;
 import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Role;
 import com.sochoeun.model.User;
@@ -40,6 +41,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FileUploadService fileUploadService;
 
     @Value("${application.upload.server.path}"+"/user/")
     String serverPath;
@@ -84,12 +86,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(
+        return userRepository.findById(userId).orElseThrow(
                 () -> new UsernameNotFoundException("User ID: %s not found".formatted(userId)));
 
-        return user;
     }
-
     @Override
     public void disableUser(Integer userId) {
         User user = getUser(userId);
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
     public String uploadProfile(Integer userId, MultipartFile file) {
         User user = getUser(userId);
         String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        String photoUrl = photoFunction.apply(photoName,file);
+        String photoUrl = fileUploadService.generateUrl(serverPath,photoName,file,"/api/users/profile/");
         user.setProfile(photoUrl);
         userRepository.save(user);
         return photoUrl;
@@ -153,31 +153,5 @@ public class UserServiceImpl implements UserService {
         // save the new password
         userRepository.save(user);
     }
-
-    private final Function<String,String> fileExtension =
-            filename -> Optional.of(filename)
-                    .filter(name -> name.contains("."))
-                    .map(name
-                            -> "." + name.substring(filename.lastIndexOf(".")+1)).orElse(".png");
-
-    private final BiFunction<String,MultipartFile,String> photoFunction = (id,image) ->{
-        try{
-            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)){
-                Files.createDirectories(fileStorageLocation);
-            }
-
-            Files.copy(
-                    image.getInputStream(),
-                    fileStorageLocation.resolve(id + fileExtension.apply(image.getOriginalFilename())), // filename
-                    REPLACE_EXISTING);
-
-            return ServletUriComponentsBuilder
-                    .fromCurrentContextPath() // localhost:8080
-                    .path("/api/users/profile/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
-        }catch (Exception e){
-            throw new RuntimeException("Unable to save image");
-        }
-    };
 
 }

@@ -1,5 +1,6 @@
 package com.sochoeun.service.impl;
 
+import com.sochoeun.config.FileUploadService;
 import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.repository.SlideRepository;
 import com.sochoeun.model.Slide;
@@ -28,6 +29,8 @@ public class SlideServiceImpl implements SlideService {
 
     @Value("${application.upload.server.path}"+"/slide/")
     String serverPath;
+
+    private final FileUploadService fileUploadService;
     // CRUD
     @Override
     public Slide createSlide(Slide request) {
@@ -41,7 +44,8 @@ public class SlideServiceImpl implements SlideService {
 
     @Override
     public Slide getSlide(Integer slideId) {
-        return slideRepository.findById(slideId).orElseThrow(()->new ResourceNotFoundException("Slide ID: %s not found.".formatted(slideId)));
+        return slideRepository.findById(slideId).orElseThrow(
+                ()->new ResourceNotFoundException("Slide ID: %s not found.".formatted(slideId)));
     }
 
     @Override
@@ -65,36 +69,10 @@ public class SlideServiceImpl implements SlideService {
     public String uploadPhoto(Integer slideId, MultipartFile file) {
         Slide slide = getSlide(slideId);
         String photoName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-        String photoUrl = photoFunction.apply(photoName,file);
+        String photoUrl = fileUploadService.generateUrl(serverPath,photoName,file,"/api/slides/image/");
         slide.setImageUrl(photoUrl);
         slideRepository.save(slide);
         return photoUrl;
     }
-
-    private final Function<String,String> fileExtension =
-            filename -> Optional.of(filename)
-                    .filter(name -> name.contains("."))
-                    .map(name
-                            -> "." + name.substring(filename.lastIndexOf(".")+1)).orElse(".png");
-
-    private final BiFunction<String,MultipartFile,String> photoFunction = (id, image) ->{
-        try{
-            Path fileStorageLocation = Paths.get(serverPath).toAbsolutePath().normalize();
-            if (!Files.exists(fileStorageLocation)){
-                Files.createDirectories(fileStorageLocation);
-            }
-
-            Files.copy(
-                    image.getInputStream(),
-                    fileStorageLocation.resolve(id + fileExtension.apply(image.getOriginalFilename())), // filename
-                    REPLACE_EXISTING);
-
-            return ServletUriComponentsBuilder
-                    .fromCurrentContextPath() // localhost:8080
-                    .path("/api/slides/image/" + id + fileExtension.apply(image.getOriginalFilename())).toUriString();
-        }catch (Exception e){
-            throw new RuntimeException("Unable to save image");
-        }
-    };
 
 }

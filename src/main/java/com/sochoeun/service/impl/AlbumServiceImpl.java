@@ -1,5 +1,6 @@
 package com.sochoeun.service.impl;
 
+import com.sochoeun.config.FileUploadService;
 import com.sochoeun.exception.ResourceNotFoundException;
 import com.sochoeun.model.Album;
 import com.sochoeun.repository.AlbumRepository;
@@ -21,7 +22,6 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static com.sochoeun.constant.constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -33,13 +33,14 @@ public class AlbumServiceImpl implements AlbumService {
     String path;
 
     private final ContentRepository contentRepository;
+    private final FileUploadService fileUploadService;
     @Override
     public void saveAlbum(Integer contentId, MultipartFile[] files) {
         contentRepository.findById(contentId).orElseThrow(()-> new ResourceNotFoundException("Content Not Found."));
         List<String> photoUrls = new ArrayList<>();
         Arrays.asList(files).forEach(file ->{
                     String genName = String.valueOf(Calendar.getInstance().getTimeInMillis());
-                    photoUrls.add( photoFunction.apply(genName, file));
+                    photoUrls.add( fileUploadService.generateUrl(path,genName,file,"/api/albums/image/"));
                 }
                 );
 

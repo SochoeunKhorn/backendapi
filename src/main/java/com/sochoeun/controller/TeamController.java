@@ -4,6 +4,7 @@ import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Team;
 import com.sochoeun.service.TeamService;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +21,12 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RestController
 @RequestMapping("/api/teams")
 @RequiredArgsConstructor
+@Tag(name = "TEAM - STAFF")
 public class TeamController {
     private final TeamService teamService;
     @Value("${application.upload.server.path}"+"/team/")
     String serverPath;
     private BaseResponse baseResponse;
-
-    @PostMapping
-    public ResponseEntity<?> createTeam(@RequestBody Team request){
-        Team team = teamService.createTeam(request);
-        baseResponse = new BaseResponse();
-        baseResponse.success(team);
-        return ResponseEntity.ok(baseResponse);
-    }
 
     @GetMapping
     public ResponseEntity<?> getTeams(){
@@ -49,7 +43,13 @@ public class TeamController {
         baseResponse.success(team);
         return ResponseEntity.ok(baseResponse);
     }
-
+    @PostMapping
+    public ResponseEntity<?> createTeam(@RequestBody Team request){
+        Team team = teamService.createTeam(request);
+        baseResponse = new BaseResponse();
+        baseResponse.success(team);
+        return ResponseEntity.ok(baseResponse);
+    }
     @PutMapping("/{teamId}")
     public ResponseEntity<?> updateTeam(@PathVariable Integer teamId,@RequestBody Team request){
         Team team = teamService.updateTeam(teamId,request);

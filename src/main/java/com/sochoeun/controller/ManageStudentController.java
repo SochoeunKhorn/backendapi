@@ -3,6 +3,7 @@ package com.sochoeun.controller;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.ManageStudent;
 import com.sochoeun.service.ManageStudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/students")
+@Tag(name = "ABOUT STUDENT INFORMATION")
 public class ManageStudentController {
     private final ManageStudentService manageStudentService;
     private BaseResponse baseResponse;

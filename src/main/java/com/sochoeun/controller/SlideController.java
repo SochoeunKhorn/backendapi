@@ -4,6 +4,7 @@ import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.Slide;
 import com.sochoeun.service.SlideService;
 import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RestController
 @RequestMapping("/api/slides")
 @RequiredArgsConstructor
+@Tag(name = "SLIDE - BANNER")
 public class SlideController {
     private final SlideService slideService;
     private BaseResponse baseResponse;

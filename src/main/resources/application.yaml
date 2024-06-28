@@ -32,8 +32,8 @@ application:
         expiration: 604800000 # 7 days
   upload:
     server:
-     path: /home/southwest/uploads/
-     #path: C:\Users\V.I.P/Downloads/uploads/
+     #path: /home/southwest/uploads/
+     path: C:\\Users\\V.I.P/Downloads/uploads/
 
 
 # openapi 3
@@ -42,5 +42,6 @@ springdoc:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+    operations-sorter: method
 
 

@@ -3,6 +3,7 @@ package com.sochoeun.controller;
 import com.sochoeun.model.Album;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.service.AlbumService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import static org.springframework.util.MimeTypeUtils.IMAGE_PNG_VALUE;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/albums")
+@Tag(name = "ALBUMS")
 public class AlbumController {
     private final AlbumService albumService;
     private BaseResponse baseResponse;

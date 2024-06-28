@@ -4,6 +4,7 @@ import com.sochoeun.model.Article;
 import com.sochoeun.model.BaseResponse;
 import com.sochoeun.model.request.ArticleRequest;
 import com.sochoeun.service.ArticleService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/articles")
 @RequiredArgsConstructor
+@Tag(name = "ARTICLES")
 public class ArticleController {
     private final ArticleService articleService;
     private BaseResponse baseResponse;

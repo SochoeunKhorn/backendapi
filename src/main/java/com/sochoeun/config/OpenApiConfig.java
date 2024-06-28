@@ -13,8 +13,8 @@ import io.swagger.v3.oas.annotations.servers.Server;
 @OpenAPIDefinition(
         info = @Info(
                 contact = @Contact(
-                        name = "Sochoeun",
-                        email = "sochoeun162@gmail.com",
+                        name = "SOUTHWEST",
+                        email = "southwest@edu.kh.com",
                         url = "#"
                 ),
                 description = "OpenApi documentation for Backend API",
@@ -28,13 +28,14 @@ import io.swagger.v3.oas.annotations.servers.Server;
         ),
         servers = {
                 @Server(
-                        description = "Local ENV",
+                        description = "DEVELOPMENT",
                         url = "http://localhost:8080"
                 ),
                 @Server(
-                        description = "PROD ENV",
+                        description = "PRODUCTION",
                         url = "http://194.233.87.193:8080"
                 )
+
         },
         security = {
                 @SecurityRequirement(
